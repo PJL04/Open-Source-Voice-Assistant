@@ -35,10 +35,12 @@ class Voice:
         engine = pyttsx3.init()
         voices = engine.getProperty('voices')
 
+        lang_search_str = language.upper()+"-"
+
         for voice in voices:
             if language == '':
-                result.append(voice.ID)
+                result.append(voice.id)
             elif language.lower() in voice.name.lower():
-                result.append(voice.ID)
+                result.append(voice.id)
 
         return result
