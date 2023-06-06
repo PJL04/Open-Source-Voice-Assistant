@@ -1,33 +1,32 @@
 from loguru import logger
 import pyttsx3
-import logging
+from TTS import Voice
+import multiprocessing
 
-# Suppress logging done by pyttsx3
-logging.getLogger('comtypes-_comobject').setLevel(logging.WARNING)
 
 class VoiceAssistant:
     def __init__(self):
         logger.info("Initialize VA...")
 
         logger.info("Initialize Speech")
-        self.tts = pyttsx3.init();
+        self.tts = Voice()
 
-        voices = self.tts.getProperty('voices')
-        for voice in voices:
-            logger.info(voice)
+        voices = self.tts.get_voice_keys_by_language("German")
 
-        voiceID = """HKEY_LOCAL-MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_DE-DE_HEDDA_11.0"""
-        self.tts.setProperty('voice', voiceID)
-        self.tts.say("Initialisierung abgeschlossen");
-        self.tts.runAndWait();
-        logger.debug("Sprachausgabeninitialisierung abgeschlossen.")
+        if len(voices) >0:
+            logger.info('Stimme {} gesetzt.', voices[0])
+            self.tts.set_voice(voices[0])
+        else:
+            logger.warning("Es wurden keine Stimmen gefunden.")
+            self.tts.say("Initialisierung abgeschlossen")
+            logger.debug("Sprachausgabe initialisiert")
+
 
     def run(self):
-        logger.info("VoiceAssistant Instanz wurde gestartet.")
-        self.tts.say("Ich bin bereit.");
-        self.tts.runAndWait();
+        logger.info("VoiceAssistant-Instanz wurde gestartet.")
 
 if __name__ == '__main__':
+    multiprocessing.set_start_method('spawn')
     logger.info("Anwendung wurde gestartet.")
     va = VoiceAssistant()
     va.run()
