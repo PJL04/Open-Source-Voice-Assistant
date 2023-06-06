@@ -1,4 +1,3 @@
-from loguru import logger
 import time, pyttsx3
 import multiprocessing
 
@@ -19,6 +18,7 @@ class Voice:
     def say(self, text):
         if self.process:
             self.stop()
+
         p = multiprocessing.Process(target=__speak__, args=(text, self.voiceID))
         p.start()
         self.process = p
@@ -40,7 +40,7 @@ class Voice:
         for voice in voices:
             if language == '':
                 result.append(voice.id)
-            elif language.lower() in voice.name.lower():
+            elif lang_search_str in voice.id:
                 result.append(voice.id)
 
         return result

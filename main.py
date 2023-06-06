@@ -18,7 +18,7 @@ class VoiceAssistant:
             self.tts.set_voice(voices[0])
         else:
             logger.warning("Es wurden keine Stimmen gefunden.")
-            
+
         self.tts.say("Initialisierung abgeschlossen")
         logger.debug("Sprachausgabe initialisiert")
 
